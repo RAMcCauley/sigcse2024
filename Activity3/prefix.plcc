@@ -7,6 +7,7 @@ token ADDOP '\+'
 token SUBOP '\-'
 token MULOP '\*'
 token DIVOP '/'
+token UNARYOP '_'
 # Add new token definition here for unary negation.
 
 token INTEGER '[0-9]+'
@@ -14,6 +15,7 @@ token INTEGER '[0-9]+'
 %
 
 <expr>Const ::= <INTEGER>
+<expr>Unary ::= UNARYOP <expr>
 <expr>Add    ::= ADDOP <expr>opnd1 <expr>opnd2
 <expr>Sub    ::= SUBOP <expr>opnd1 <expr>opnd2
 <expr>Mul    ::= MULOP <expr>opnd1 <expr>opnd2
@@ -78,3 +80,47 @@ Add
 # definition in their Expr superclass given above. To fix this, in
 # the space below define the "evaluate" method for each of the
 # remaining classes Sub, Mul, and Div that extend the Expr class.
+
+# The Sub class has two fields derived from the RHS of its
+# grammar rule: "opnd1" and "opnd2". Both of these fields are
+# instances of the "Expr" class, so both instances implement
+# the "evaluate" method.
+Sub
+%%{
+    public int evaluate() {
+        return opnd1.evaluate() - opnd2.evaluate();
+    }
+%%}
+
+# The Mul class has two fields derived from the RHS of its
+# grammar rule: "opnd1" and "opnd2". Both of these fields are
+# instances of the "Expr" class, so both instances implement
+# the "evaluate" method.
+Mul
+%%{
+    public int evaluate() {
+        return opnd1.evaluate() * opnd2.evaluate();
+    }
+%%}
+
+# The Div class has two fields derived from the RHS of its
+# grammar rule: "opnd1" and "opnd2". Both of these fields are
+# instances of the "Expr" class, so both instances implement
+# the "evaluate" method.
+Div
+%%{
+    public int evaluate() {
+        return opnd1.evaluate() / opnd2.evaluate();
+    }
+%%}
+
+# The UNARY class has one field derived from the RHS of its
+# grammar rule: "expr". This field is an
+# instance of the "Expr" class, so it implements
+# the "evaluate" method.
+Unary
+%%{
+    public int evaluate() {
+        return - expr.evaluate();
+    }
+%%}
